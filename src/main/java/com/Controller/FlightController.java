@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Models.FlightModel;
 import com.Services.FlightService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,29 +22,32 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @Tag(name="REST End Points of Flights CRUD operations.")
 @RestController
-@RequestMapping("flights")
+@RequestMapping("admin")
 public class FlightController {
     @Autowired
     FlightService flightService;
 
-     
-    @GetMapping(value="",produces = "application/json")
+    @Operation(summary =" Returns list of saved Flights.")
+    @GetMapping(value="flights",produces = "application/json")
     public ResponseEntity<List<FlightModel>> getFlights() {
         return ResponseEntity.ok(flightService.getFlights());
     }
 
+    @Operation(summary =" Creates flight.")
     @PostMapping(value="createFlight",produces = "application/json")
     public ResponseEntity<FlightModel> createFlight(@RequestBody FlightModel flight) {
         
         return ResponseEntity.ok(flightService.createFlight(flight));
     }
 
+    @Operation(summary =" Finds flight with given id and updates it with given new flight details.")
     @PutMapping(value="updateFlight/{id}",produces = "application/json")
     public ResponseEntity<FlightModel> updateFlight(@PathVariable String id,@RequestBody FlightModel flight) {
         
         return ResponseEntity.ok(flightService.updateFlight(id,flight));
     }
 
+    @Operation(summary =" Deletes flight with given id")
     @DeleteMapping(value="deleteFlight/{id}",produces = "application/string")
     public ResponseEntity<String> deleteFlight(@PathVariable String id) {
         

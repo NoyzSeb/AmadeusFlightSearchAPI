@@ -1,29 +1,34 @@
 package com.Controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
-
 import com.Models.FlightModel;
 import com.Services.FlightSearchService;
-
-import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 
 @Tag(name="REST End Point of flight search")
 @RestController
-@RequestMapping("flightSearch")
 public class FlightSearch {
     @Autowired
     FlightSearchService flightSearchService;
     
-    @GetMapping(value="",produces = "application/json")
+    
+    
+     @GetMapping("")
+    public String goToSwagger() {
+        String body =
+        "<HTML><body> <a href=\"http://localhost:8080/swagger-ui/index.html#/\">SWAGGER PAGE</a></body></HTML>"
+        +"<HTML><body> <a href=\"http://localhost:8080/login#/\">LOGIN PAGE</a></body></HTML>";
+        return (body);
+    }
+
+
+    @GetMapping(value="flightSearch",produces = "application/json")
     public ResponseEntity<Map<String,List<FlightModel>>> getAvailableFlights(
     @RequestParam(name = "Departure AirportName",required = true) String departureAirport
     ,@RequestParam(name = "Arrival AirportName",required = true) String arrivalAirport
@@ -40,6 +45,5 @@ public class FlightSearch {
         return ResponseEntity.ok(flightSearchService.searchedFlights(searchedFlight));
        // return ResponseEntity.ok(searchedFlight);
     }
- 
 
 }
